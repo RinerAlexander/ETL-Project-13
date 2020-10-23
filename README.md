@@ -6,7 +6,7 @@
 * Kaylon Young
 
 ## Project Description
-Let's see what on Netflix this month.  Our team will pull informtion from Kaggle - Netflix Movies and TV Shows and from Open Movie Database API
+Let's see what on Netflix this month.  Our team will combine information from the Netflix Movies and TV Shows dataset on Kaggle and from Open Movie Database API.
 
 ## Data Sources
 * Kaggle NetFlix Movie and TV Shows
