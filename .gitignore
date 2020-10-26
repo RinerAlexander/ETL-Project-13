@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 config.py
 api_keys.py
+passwords.py
 __pycache__/
 *.py[cod]
 *$py.class

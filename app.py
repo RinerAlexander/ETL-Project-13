@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -6,13 +7,14 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
 from flask import Flask, jsonify, render_template
+from config import Posgres_Pswrd
 
-engine = create_engine("#")
+engine = create_engine(f"postgres://postgres:{Posgres_Pswrd}@localhost:5432/movies_db")
 
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 
-netflixDB=base.classes.netflix_titles
+netflixDB=Base.classes.netflix_omdb
 
 
 app = Flask(__name__)
@@ -28,19 +30,21 @@ def welcome():
 def findMovie(title):
 
     session = Session(engine)
-    results = session.query(netflixDB).filter(netflixDB.Show_Title==title)
+    results = session.query(netflixDB).filter(netflixDB.show_title==title).all()
     session.close
 
-    return jsonify(results)
+    toReturn=list(np.ravel(results))
+    return jsonify(toReturn)
 
 @app.route("/director_name/<director>")
 def findDirector(director):
 
     session = Session(engine)
-    results = session.query(netflixDB).filter(director in netflixDB.Show_Director)
+    results = session.query(netflixDB).filter(director in netflixDB.Show_Director).all()
     session.close
 
-    return jsonify(results)
+    toReturn=list(np.ravel(results))
+    return jsonify(toReturn)
 
 if __name__ == '__main__':
     app.run(debug=True)
