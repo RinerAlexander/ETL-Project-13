@@ -26,21 +26,32 @@ def welcome():
     
     return render_template('index.html')
 
-@app.route("/movie_title/<title>")
+@app.route("/show_title/<title>")
 def findMovie(title):
 
     session = Session(engine)
     results = session.query(netflixDB).filter(netflixDB.show_title==title).all()
     session.close
 
-    toReturn=list(np.ravel(results))
+    toReturn=[]
+    for movie in results:
+        movieDict={"id":movie.show_id,
+        "type":movie.show_type,
+        "title":movie.show_title,
+        "director":movie.show_director,
+        "cast":movie.show_cast,
+        "country":movie.show_country,
+        "date added":movie.date_added,
+        "date released":movie.release_year,
+        }
+        toReturn.append(movieDict)
     return jsonify(toReturn)
 
 @app.route("/director_name/<director>")
 def findDirector(director):
 
     session = Session(engine)
-    results = session.query(netflixDB).filter(director in netflixDB.Show_Director).all()
+    results = session.query(netflixDB).filter(director in netflixDB.show_director).all()
     session.close
 
     toReturn=list(np.ravel(results))
