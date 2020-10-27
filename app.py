@@ -43,6 +43,16 @@ def findMovie(title):
         "country":movie.show_country,
         "date added":movie.date_added,
         "date released":movie.release_year,
+        "duration":movie.show_duration,
+        "description":movie.show_description,
+        "awards":movie.awards,
+        "genre":movie.genre,
+        "language":movie.language,
+        "writer":movie.writer,
+        "MPAA rating":movie.show_rating,
+        "ratings":{"IMdB":movie.rating_imdb,
+                    "Rotten Tomatoes":movie.rating_rotten,
+                    "Metacritic":movie.rating_metacritic}
         }
         toReturn.append(movieDict)
     return jsonify(toReturn)
@@ -51,10 +61,31 @@ def findMovie(title):
 def findDirector(director):
 
     session = Session(engine)
-    results = session.query(netflixDB).filter(director in netflixDB.show_director).all()
+    results = session.query(netflixDB).filter(netflixDB.show_director.contains(director)).all()
     session.close
 
-    toReturn=list(np.ravel(results))
+    toReturn=[]
+    for movie in results:
+        movieDict={"id":movie.show_id,
+        "type":movie.show_type,
+        "title":movie.show_title,
+        "director":movie.show_director,
+        "cast":movie.show_cast,
+        "country":movie.show_country,
+        "date added":movie.date_added,
+        "date released":movie.release_year,
+        "duration":movie.show_duration,
+        "description":movie.show_description,
+        "awards":movie.awards,
+        "genre":movie.genre,
+        "language":movie.language,
+        "writer":movie.writer,
+        "ratings":{"Netflix":movie.show_rating,
+                    "IMdB":movie.rating_imdb,
+                    "Rotten Tomatoes":movie.rating_rotten,
+                    "Metacritic":movie.rating_metacritic}
+        }
+        toReturn.append(movieDict)
     return jsonify(toReturn)
 
 if __name__ == '__main__':
